@@ -1,0 +1,117 @@
+﻿@model BlogEditModel
+
+<form asp-controller="Admin" asp-action="BlogEdit" method="post" enctype="multipart/form-data">
+
+    <input type="hidden" asp-for="UploadDate" />
+
+    <input type="hidden" asp-for="Id" value="@Model.Id" />
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    <label asp-for="ImageUrl" style="font-family: 'Varela Round', sans-serif; color:#E38B29;">Image</label>
+                </div>
+
+                <div class="col-md-10">
+                    <img style=" width: 100%; height: 20rem;" id="imgViewer" src="~/images/@Model.ImageUrl" />
+                    <input class="d-none" type="file" name="file" id="formFile" accept="image/" />
+                    <div>
+                        <label class="btn btn-light" for="formFile">Upload Image</label>
+                        <label id="imageUrl">@Model.ImageUrl</label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    <label style="font-family: 'Varela Round', sans-serif; color:#E38B29;" asp-for="Title"></label>
+                </div>
+                <div class="col-md-10">
+                    <input type="text" asp-for="Title" />
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    <label style="font-family: 'Varela Round', sans-serif; color:#E38B29;" asp-for="Author"></label>
+                </div>
+                <div class="col-md-10">
+                    <input type="text" asp-for="Author" />
+                </div>
+            </div>
+
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    <label style="font-family: 'Varela Round', sans-serif; color:#E38B29;" asp-for="Summary"></label>
+                </div>
+                <div class="col-md-10">
+                    <textarea asp-for="Summary" rows="3" cols="30"></textarea>
+                </div>
+            </div>
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    <label style="font-family: 'Varela Round', sans-serif; color:#E38B29;" asp-for="IsHome"></label>
+                </div>
+                <div class="col-md-10">
+                    <input type="checkbox" class="form-check-input" asp-for="IsHome" />
+                    <label class="custom-control-label">Is Home?</label>
+                </div>
+            </div>
+            <div class="form-group row mb-2">
+                <div class="col-md-2">
+                    <label style="font-family: 'Varela Round', sans-serif; color:#E38B29;" asp-for="SelectedCategories">Categories</label>
+                </div>
+                <div class="col-md-10">
+                    @foreach (var category in (List<Category>)ViewBag.Categories)
+                    {
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox"
+                               class="form-check-input"
+                               value="@category.Id"
+                               name="categoryIds"
+                               @if (Model.SelectedCategories!=null)
+                               {
+                               @(Model.SelectedCategories.Any(c=>c.Id==category.Id) ? "checked" : "")
+                               }
+                              />
+                            <label class="custom-control-label">@category.CategoryName</label>
+                        </div>
+                    }
+                    <span class="text-danger">@ViewBag.CategoryErrorMessage</span>
+                </div>
+            </div>
+
+
+            <div class="form-group row mb-2">
+                <div class="col-md-10 offset-2">
+                    <button class="btn btn-sm" type="submit" style="background-color:mediumaquamarine; font-family: 'Varela Round', sans-serif;">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group row mb-2">
+                <div class="col-md-10">
+                    <textarea asp-for="Description" rows="25" cols="50"></textarea>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+    <script>
+        let formFile = document.getElementById("formFile");
+        let imgViewer = document.getElementById("imgViewer");
+        let imgUrl = document.getElementById("imageUrl");
+
+        formFile.addEventListener("change", function (event) {
+            let files = event.target.files;
+            imgViewer.setAttribute("src", window.URL.createObjectURL(files[0]));
+            imgUrl.innerText = imgViewer.getAttribute("src");
+        });
+    </script>

@@ -1,0 +1,66 @@
+﻿@model List<MyIdentityUser>
+
+<div class="row">
+    <div class="col-md-12">
+        <h5 style="font-family: 'Varela Round', sans-serif; color:saddlebrown" class="text-center">USERS</h5>
+        <a style="font-family: 'Varela Round', sans-serif; color:cadetblue" asp-controller="Admin" asp-action="UserCreate" class="text-decoration-none">ADD</a>
+        <a style="color:cadetblue" asp-controller="Admin" asp-action="UserCreate"><i class="fa-solid fa-plus"></i></a>
+        <table class="table table-sm table-responsive-md">
+            <thead>
+                <tr>
+                    <td style="font-family: 'Varela Round', sans-serif; color:#E38B29">Name</td>
+                    <td style="font-family: 'Varela Round', sans-serif; color:#E38B29">Surname</td>
+                    <td style="font-family: 'Varela Round', sans-serif; color:#E38B29">User Name</td>
+                    <td style="font-family: 'Varela Round', sans-serif; color:#E38B29">Email</td>
+                    <td class="text-center" style="font-family: 'Varela Round', sans-serif; color:#E38B29">Actions</td>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td style="font-family: 'Varela Round', sans-serif" class="text-muted">@user.Name.ToUpper()</td>
+                            <td style="font-family: 'Varela Round', sans-serif" class="text-muted">@user.Surname.ToUpper()</td>
+                            <td style="font-family: 'Varela Round', sans-serif" class="text-muted">@user.UserName</td>
+                            <td style="font-family: 'Varela Round', sans-serif" class="text-muted">@user.Email</td>
+                            <td>
+                                <div class="d-flex justify-content-evenly">
+                                    <a class="btn" style="color:red"><i class="fa-regular fa-trash-can" data-bs-toggle="modal" data-bs-target="#DeleteModal_@user.Id"></i></a>
+
+                                    <!-- DeleteModal -->
+                                    <div class="modal fade" id="DeleteModal_@user.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Warning!</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p class="text-danger">This user will be deleted!</p>
+                                                    <p>Are you sure?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <a class="btn btn-danger" asp-controller="Admin" asp-action="UserDelete" asp-route-id="@user.Id">Yes</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a class="btn" style="color:burlywood" asp-controller="Admin" asp-action="UserEdit" asp-route-id="@user.Id"><i class="fa-regular fa-pen-to-square"></i></a>
+                                    <a class="btn" style="color:#B4C6A6" asp-controller="Admin" asp-action="PasswordEdit" asp-route-id="@user.Id"><i class="fa-solid fa-lock"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+
+        </table>
+
+
+    </div>
+
+</div>

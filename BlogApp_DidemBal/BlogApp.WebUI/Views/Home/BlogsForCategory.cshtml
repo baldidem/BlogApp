@@ -1,0 +1,47 @@
+﻿@model List<Blog>
+
+
+
+<div class="row">
+    <div class="col-12">
+    </div>
+    <div class="row">
+        <div class="col-9">
+            <h3 class="text-center" style="color:saddlebrown">@ViewBag.CategoryName</h3>
+
+            <div class="row">
+
+                @foreach (var blog in Model)
+                {
+                    @await Html.PartialAsync("_Blog", blog)
+                }
+            </div>
+
+        </div>
+        <div class="col-3">
+
+            <h5 class="text-muted text-center">Categories</h5>
+            <hr />
+            @foreach (var category in (List<Category>)ViewBag.Categories)
+            {
+                <div class="d-flex justify-content-around">
+
+                    <a style="color:#E38B29; text-decoration: none" asp-controller="Home" asp-action="BlogsForCategory" asp-route-id=@category.Id>@category.CategoryName</a>
+
+                </div>
+            }
+            <hr />
+            <h5 class="text-muted text-center">Follow Us</h5>
+            <hr />
+            <div class="d-flex justify-content-md-around">
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-facebook"></i>
+                <i class="fa-brands fa-twitter"></i>
+            </div>
+        </div>
+    </div>
+
+
+
+
+

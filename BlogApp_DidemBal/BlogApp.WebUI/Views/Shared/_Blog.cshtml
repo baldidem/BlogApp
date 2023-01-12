@@ -1,0 +1,22 @@
+﻿@model Blog
+
+
+<div class="col-4">
+    <div class="card  border-0">
+        <div class="card-img text-center p-2 me-4">
+            <a asp-controller="Home" asp-action="BlogDetails" asp-route-id=@Model.Id>
+            <img src="~/images/@Model.ImageUrl" style="width: 100%; height: auto;">
+            </a>
+
+            
+        </div>
+        <div class="card-body mt-0">
+            <h5 style="color:saddlebrown" class="card-title text-center p-0">@Model.Title</h5>
+            <p class="text-center fs-6 text-muted" style="font-family: 'Varela Round', sans-serif;">@Model.UploadDate.ToShortDateString()</p>
+            <div class="ps-2 text-center">@Model.Summary</div>
+        </div>
+        <div class="card-footer bg-light d-flex justify-content-around">
+            <a class="btn btn-sm" style="background-color: #E38B29" asp-controller="Home" asp-action="BlogDetails" asp-route-id=@Model.Id>Read More</a>
+        </div>
+    </div>
+</div>

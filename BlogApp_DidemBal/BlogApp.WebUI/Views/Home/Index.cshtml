@@ -1,0 +1,107 @@
+﻿@model List<Blog>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    <div class="col-12">
+        <h3 class="text-center" style="color:saddlebrown">WELCOME TO BLOG APP</h3>
+ 
+        <img style=" width: 100%; height: auto;" src="~/images/homePage.jpg">
+        <p class="m-5 mb-2">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore        et dolore magna  aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.               Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>     
+    </div>
+</div>
+<div class="row">
+    <div class="col-9">
+        
+            <div class="row">
+                @foreach (var blog in Model)
+                {
+                    @await Html.PartialAsync("_Blog", blog)
+                }
+            </div>
+        
+    </div>
+    <div class="col-3">
+        <form asp-controller="Home" asp-action="Search">
+        <div class="d-flex d-inline">
+            <input type="text" class="input-group-text" name="search" />
+                <button class="btn-sm" type="submit" style="font-family: 'Varela Round', sans-serif; font-size:12px; background-color:#B05B3B; color:#F6F6F6; border:none">SEARCH</button>
+        </div>
+                    </form>
+        <h5 class="mb-0 mt-2 fs-5 text-center text-muted">About Me</h5>  
+        <hr />
+        <img style=" width: 100%; height: auto;" src="~/images/aboutme.jpg" />
+        <hr />
+        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna             aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.             Duis aute "</p>
+        <hr />
+        <h5 class="text-muted text-center">Categories</h5>
+        <div class="d-flex justify-content-center text-info">
+            @if (User.Identity.IsAuthenticated)
+            {
+                @if (User.IsInRole("ADMIN"))
+                {
+                    <form asp-controller="Admin" asp-action="CategoryCreate">
+                        <input type="text" name="categoryAdded" />
+                        <button style="background-color:cadetblue" class="btn btn-sm text-light" type="submit">Add</button>
+                    </form>
+                }
+
+            }
+        </div>
+        <hr />
+        @foreach (var category in (List<Category>)ViewBag.Categories)
+        {
+            <div class="d-flex justify-content-between">              
+
+            <a style="color:#E38B29; text-decoration: none" asp-controller="Home" asp-action="BlogsForCategory" asp-route-id=@category.Id>@category.CategoryName</a>
+                        <div class="d-flex">
+                            @if (User.Identity.IsAuthenticated)
+                    {
+                        @if (User.IsInRole("ADMIN"))
+                        {
+                            <a class="btn" style="color:red;" data-bs-toggle="modal" data-bs-target="#DeleteModal_@category.Id"><i class="fa-regular fa-trash-can"></i></a>
+
+                            <!-- DeleteModal -->
+                            <div class="modal fade" id="DeleteModal_@category.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Warning!</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p class="text-danger">
+                                                This category will be deleted! If this category includes blogs, the selected categories in the blogs will disappear automatically.
+                                            </p>
+                                            <p>Are you sure?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <a class="btn btn-danger" asp-controller="Admin" asp-action="CategoryDelete" asp-route-id="@category.Id">Yes</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <a class="btn" style="color:cadetblue;" asp-controller="Admin" asp-action="CategoryEdit" asp-route-id="@category.Id"><i class="fa-regular fa-pen-to-square"></i></a>
+                        }
+                        
+                    }
+
+                        </div>
+
+            </div>
+        }
+        <hr />
+        <h5 class="text-muted text-center">Follow Us</h5>
+        <hr />
+        <div class="d-flex justify-content-md-around">
+        <i class="fa-brands fa-instagram"></i>
+        <i class="fa-brands fa-facebook"></i>
+        <i class="fa-brands fa-twitter"></i>
+        </div>
+    </div>
+</div>
